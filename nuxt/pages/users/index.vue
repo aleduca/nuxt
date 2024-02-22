@@ -5,8 +5,15 @@
 </template>
 
 <script setup>
-const route = useRoute();
-console.log(route.query.page);
+useHead({
+  title: 'Users',
+  meta: [
+    {
+      name: 'description',
+      content: 'Users page list',
+    },
+  ],
+})
 </script>
 
 <style lang="scss" scoped>

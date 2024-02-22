@@ -5,6 +5,19 @@
 </template>
 
 <script setup>
+// definePageMeta({
+//   layout: 'custom',
+// })
+
+useHead({
+  title: 'Home',
+  meta: [
+    {
+      name: 'description',
+      content: 'Home page description',
+    },
+  ],
+})
 
 </script>
 
