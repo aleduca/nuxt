@@ -1,9 +1,8 @@
 <template>
-  <div>
+    <NuxtLoadingIndicator color="red" height="3" :throttle="0"   />
     <NuxtLayout>
       <NuxtPage />
     </NuxtLayout>
-  </div>
 </template>
 
 <script setup>
