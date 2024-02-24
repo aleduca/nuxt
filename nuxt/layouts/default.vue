@@ -1,15 +1,20 @@
 <template>
-    <Header />
+    <AppHeader />
+
+    <LazyAppButtonsDanger v-if="show" />
+
+    <button @click="show = !show">Toogle Button</button>
 
     <div class="container">
         <slot />
     </div>
 
-    <Footer />
+    <AppFooter />
 </template>
 
 <script setup>
 // import '@/node_modules/bootstrap/dist/css/bootstrap.min.css'
+const show = ref(false)
 </script>
 
 <style lang="css">
