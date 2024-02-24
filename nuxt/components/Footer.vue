@@ -1,5 +1,5 @@
 <template>
-    <footer>
+    <footer class="text text-center">
       <div>Footer</div>
     </footer>
 </template>
