@@ -1,3 +1,4 @@
+import {resolve} from 'path';
 // https://nuxt.com/docs/api/configuration/nuxt-config
 // <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
 export default defineNuxtConfig({
@@ -5,6 +6,10 @@ export default defineNuxtConfig({
   // css:[
   //   '@/node_modules/bootstrap/dist/css/bootstrap.min.css'
   // ],
+  alias:{
+    'imgs': resolve(__dirname, './assets/img'),
+    '!!': resolve(__dirname, './node_modules'),
+  },
   app:{
     head:{
       link: [
