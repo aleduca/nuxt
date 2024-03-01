@@ -1,6 +1,6 @@
 <template>
   <div>
-    <h2>Post from {{ $route.params.post }}</h2>
+    <h2>Product Index {{ $route.params.product }}</h2>
   </div>
 </template>
 

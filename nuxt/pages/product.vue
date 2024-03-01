@@ -1,6 +1,7 @@
 <template>
   <div>
-    <h2>Post from {{ $route.params.post }}</h2>
+    <h1>Product Nuxt Page</h1>
+    <NuxtPage />
   </div>
 </template>
 

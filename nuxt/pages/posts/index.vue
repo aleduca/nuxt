@@ -11,3 +11,5 @@
 <style lang="scss" scoped>
 
 </style>
+
+<!-- product/:product/price/:price -->
