@@ -2,21 +2,24 @@
   <div>
       <h2>Users</h2>
 
-      <!-- <button class="btn btn-success btn-sm mb-4" @click="execute">Fetch</button>-->
-
       <div v-if="error">
-        {{ error.statusCode }}
-        {{ error.message }}
+        {{ error.status }}
+        {{ error.statusText }}
       </div>
 
       <div v-else>
-      <div v-if="pending && status === 'pending'">Carregando...</div>
+
+      <div v-if="pending">
+        Carregando...
+      </div>
+
       <div v-else>
         <ul>
-          <li v-for="user in  users" :key="user.id">
+          <li v-for="user in users">
             {{ user.name }} - {{ user.email }}
           </li>
         </ul>
+
       </div>
     </div>
   </div>
@@ -33,28 +36,35 @@ useHead({
   ],
 })
 
+const users = ref([]);
+const error = ref(null);
+const pending = ref(true);
+
 const config = useRuntimeConfig();
 
 // const endpoint= 'https://fakestoreapi.com/products';
 const endpoint= config.public.apiBase+'/api/users';
 
-const { data:users, pending, error, status,refresh, execute } = await useFetch(endpoint,{
-  lazy:true,
-  // immediate:false,
-  // server:false,
-  // pick:['id','price','title','image']
-  // transform: (products) => {
-  //   return products.map(product =>
-  //   ({
-  //     id: product.id,
-  //     price: product.price,
-  //     name: product.title,
-  //     image: product.image
-  //   }))
-  // }
-});
+async function loadUsers(){
+  try {
+    const data = await $fetch(endpoint);
+    pending.value = false;
 
-console.log(users);
+    users.value = data;
+  } catch (e) {
+    error.value = e;
+    console.log(e)
+  }
+
+}
+// console.log(users);
+
+onMounted(() => {
+  nextTick(() => {
+    loadUsers();
+  });
+})
+
 
 </script>
 
