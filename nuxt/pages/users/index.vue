@@ -2,8 +2,6 @@
   <div>
       <h2>Users</h2>
 
-      <button @click="execute">Fetch</button>
-
       <div v-if="error">
         {{ error.status }}
         {{ error.statusText }}
@@ -17,8 +15,8 @@
 
       <div v-else>
         <ul>
-          <li v-for="user in data.users">
-            {{ user.name }} - {{ user.email }}
+          <li v-for="user in users">
+            {{ user.name }} - {{ user.email }} <NuxtLink :to="'/users/'+user.id">Details</NuxtLink>
           </li>
         </ul>
 
@@ -40,22 +38,19 @@ useHead({
 
 const config = useRuntimeConfig();
 
-// const endpoint= 'https://fakestoreapi.com/products';
-const endpoint1= config.public.apiBase+'/api/users';
-const endpoint2= 'https://fakestoreapi.com/products/';
+const endpoint1= 'https://fakestoreapi.com/products';
+const endpoint2= config.public.apiBase+'/api/users';
 
-const {data,error,pending,execute} = await useAsyncData('users', async () => {
-  const [users, products] = await Promise.all([
-      $fetch(endpoint1),
-      $fetch(endpoint2)
-  ])
-
-  return {users, products}
-},{
+const {data:users,error,pending} = await useAsyncData('users',() => $fetch(endpoint2),{
   lazy: true,
 })
 
-console.log(data.value.products);
+const {data:products} = await useFetch(endpoint1,{
+  lazy: true,
+  key:'products'
+});
+
+console.log(users);
 
 </script>
 
