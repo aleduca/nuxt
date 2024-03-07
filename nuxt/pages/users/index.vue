@@ -15,8 +15,14 @@
 
       <div v-else>
         <ul>
-          <li v-for="user in users">
+          <li v-for="user in users.data">
             {{ user.name }} - {{ user.email }} <NuxtLink :to="'/users/'+user.id">Details</NuxtLink>
+          </li>
+        </ul>
+
+        <ul class="pagination">
+          <li class="page-item" v-for="(p,index) in users.links" :key="index">
+            <a href="" v-if="p.url" v-html="p.label" class="page-link" :class="{'active':p.active}" @click.prevent="updatePage(p.label)"></a>
           </li>
         </ul>
 
@@ -36,19 +42,28 @@ useHead({
   ],
 })
 
+const router = useRouter();
+
 const config = useRuntimeConfig();
 
-const endpoint1= 'https://fakestoreapi.com/products';
-const endpoint2= config.public.apiBase+'/api/users';
+const page = ref(1);
 
-const {data:users,error,pending} = await useAsyncData('users',() => $fetch(endpoint2),{
-  lazy: true,
+function updatePage(label){
+  page.value = label;
+  router.push({query: { page: page.value}})
+}
+
+const endpoint = computed(() => {
+  return config.public.apiBase+'/api/users';
 })
 
-const {data:products} = await useFetch(endpoint1,{
-  lazy: true,
-  key:'products'
+const {data:users,error,pending} = await useFetch(endpoint.value,{
+  query: { page},
+  lazy:true,
+  watch: [page]
 });
+
+router.push({query: { page: page.value}})
 
 console.log(users);
 

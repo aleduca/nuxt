@@ -1,6 +1,6 @@
 import {resolve} from 'path';
 export default defineNuxtConfig({
-  devtools: { enabled: true },
+  devtools: { enabled: false },
   alias:{
     'imgs': resolve(__dirname, './assets/img'),
     '!!': resolve(__dirname, './node_modules'),
