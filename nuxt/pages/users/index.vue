@@ -14,24 +14,30 @@
       </div>
 
       <div v-else>
-        <ul>
-          <li v-for="user in users.data">
-            {{ user.name }} - {{ user.email }} <NuxtLink :to="'/users/'+user.id">Details</NuxtLink>
-          </li>
-        </ul>
+          <div class="mt-4 mb-4">
+            <UTable :rows="users.data" :columns="columns" />
+          </div>
 
-        <ul class="pagination">
-          <li class="page-item" v-for="(p,index) in users.links" :key="index">
-            <a href="" v-if="p.url" v-html="p.label" class="page-link" :class="{'active':p.active}" @click.prevent="updatePage(p.label)"></a>
-          </li>
-        </ul>
-
+          <UPagination v-model="page" :page-count="users.last_page" :total="users.total" @click="updatePage" />
       </div>
     </div>
   </div>
 </template>
 
 <script setup>
+
+const columns = [{
+  key: 'id',
+  label: 'ID'
+}, {
+  key: 'name',
+  label: 'Name'
+}, {
+  key: 'email',
+  label: 'E-mail'
+}]
+
+
 useHead({
   title: 'Users',
   meta: [
@@ -48,8 +54,7 @@ const config = useRuntimeConfig();
 
 const page = ref(1);
 
-function updatePage(label){
-  page.value = label;
+function updatePage(){
   router.push({query: { page: page.value}})
 }
 

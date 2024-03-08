@@ -19,18 +19,7 @@ export default defineNuxtConfig({
       apiBase: 'http://localhost:8000'
     }
   },
-  app:{
-    head:{
-      link: [
-        {
-        rel: 'stylesheet',
-        integrity:'sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH',
-        crossorigin:'anonymous',
-        href: 'https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css'
-       }
-      ]
-    }
-  },
+
   components:[
     {
       path: '~/components',
@@ -38,6 +27,7 @@ export default defineNuxtConfig({
     },
   ],
   modules: [
+    '@nuxt/ui',
     [
       '@nuxtjs/google-fonts',{
       families:{
