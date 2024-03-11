@@ -1,30 +1,43 @@
 <template>
-  <div>
-      <h2>Users</h2>
 
-      <div v-if="error">
-        {{ error.status }}
-        {{ error.statusText }}
-      </div>
-
-      <div v-else>
-
-      <div v-if="pending">
-        Carregando...
-      </div>
-
-      <div v-else>
-          <div class="mt-4 mb-4">
-            <UTable :rows="users.data" :columns="columns" />
+    <div class="my-8">
+      <div class="mx-auto px-4 sm:px-6 lg:px-8 gap-16 sm:gap-y-24 flex flex-col max-w-5xl">
+        <div class="text-center">
+          <h1 class="text-md font-bold tracking-tight text-gray-900 dark:text-white sm:text-6xl">
+            Users
+          </h1>
+          <div v-if="error">
+            {{ error.status }}
+            {{ error.statusText }}
           </div>
 
-          <UPagination v-model="page" :page-count="users.last_page" :total="users.total" @click="updatePage" />
+          <div v-else>
+
+            <div v-if="pending">
+              Carregando...
+            </div>
+
+            <div v-else>
+                <div class="mt-4 mb-4 text-left">
+                  <UTable :rows="users.data" :columns="columns">
+                    <template #created_at-data="{row}">
+                      {{ dateFormat(row.created_at) }}
+                    </template>
+                  </UTable>
+                </div>
+
+                <UPagination v-model="page" :page-count="users.last_page" :total="users.total" @click="updatePage" />
+            </div>
+          </div>
+        </div>
       </div>
     </div>
-  </div>
+
 </template>
 
 <script setup>
+import dateFormat from '~/utils/dateFormat';
+
 
 const columns = [{
   key: 'id',
@@ -35,7 +48,12 @@ const columns = [{
 }, {
   key: 'email',
   label: 'E-mail'
-}]
+},
+{
+  key: 'created_at',
+  label: 'Created'
+}
+]
 
 
 useHead({

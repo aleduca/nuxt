@@ -1,10 +1,9 @@
 <template>
     <AppHeader />
 
-    <div class="mt-4 ml-4">
+    <div class="relative">
         <slot />
     </div>
-
     <AppFooter />
 </template>
 
