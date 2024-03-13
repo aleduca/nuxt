@@ -19,15 +19,18 @@ export default defineNuxtConfig({
       apiBase: 'http://localhost:8000'
     }
   },
-
   components:[
     {
       path: '~/components',
       pathPrefix: true
     },
   ],
+  colorMode: {
+    preference:'system'
+  },
   modules: [
     '@nuxt/ui',
+    '@nuxtjs/color-mode',
     [
       '@nuxtjs/google-fonts',{
       families:{
