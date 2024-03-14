@@ -1,20 +1,5 @@
 <template>
-    <div v-if="showTopBar" class="relative bg-primary hover:bg-primary/90 transition-[background] backdrop-blur z-50 app-banner">
-      <div class="mx-auto px-4 sm:px-6 lg:px-8 max-w-7xl py-2">
-        <div class="flex items-center justify-between gap-2">
-          <div class="lg:flex-1 hidden lg:flex items-center"></div>
-          <p class="text-sm font-medium text-white dark:text-gray-900">
-            <span class="i-heroicons-rocket-launch w-5 h-5 align-top flex-shrink-0 pointer-events-none mr-2"></span>
-            <span class="font-semibold">Nuxt & Laravel</span>
-          </p>
-          <div class="flex items-center justify-end lg:flex-1">
-            <button @click="closeTopBar" class="p-1.5 rounded-md inline-flex hover:bg-primary/90" aria-label="Close banner">
-              <span class="i-heroicons-x-mark-20-solid w-5 h-5 text-white dark:text-gray-900"></span>
-            </button>
-          </div>
-        </div>
-      </div>
-    </div>
+   <TopBar />
 
   <header class="h-13 bg-background/75 backdrop-blur border-b -mb-px sticky top-0 z-50 border-gray-200 dark:border-gray-800">
     <div class="mx-auto px-4 sm:px-6 lg:px-8 max-w-7xl flex items-center justify-between gap-3 h-16">
@@ -33,11 +18,7 @@
       </ul>
       <div class="flex items-center justify-end lg:flex-1 gap-1.5">
         <div class="relative inline-flex">
-          <button type="button"
-            class="focus:outline-none focus-visible:outline-0 disabled:cursor-not-allowed disabled:opacity-75 flex-shrink-0 font-medium rounded-md text-sm gap-x-1.5 p-1.5 text-gray-700 dark:text-gray-200 hover:text-gray-900 dark:hover:text-white hover:bg-gray-50 dark:hover:bg-gray-800 focus-visible:ring-inset focus-visible:ring-2 focus-visible:ring-primary-500 dark:focus-visible:ring-primary-400 inline-flex items-center"
-            aria-label="Search">
-            <span class="i-heroicons-magnifying-glass-20-solid flex-shrink-0 h-5 w-5" aria-hidden="true"></span>
-          </button>
+            <Search />
         </div>
         <ClientOnly>
         <button type="button" v-if="colorMode.value !== 'dark'" @click="colorMode.preference = 'dark'"
@@ -71,13 +52,14 @@
         </button>
       </div>
     </div>
+
+
   </header>
 
 
 </template>
 
 <script setup>
-import { useTopBar } from '~/composables/useTopBar';
 
 const colorMode = useColorMode()
 
@@ -91,25 +73,7 @@ const links = [{
   to: '/users'
 }]
 
-const showTopBar = ref(false);
 
-const topBar = useCookie('topBar');
-
-function closeTopBar() {
-  showTopBar.value = false;
-  topBar.value = false;
-  setTimeout(() => {
-    setCookieInMinutes('topBar', false, 1);
-  }, 300);
-}
-
-onMounted(() => {
-
-  console.log(topBar.value);
-
-  useTopBar(topBar, showTopBar);
-
-});
 
 </script>
 

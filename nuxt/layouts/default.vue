@@ -1,9 +1,12 @@
 <template>
     <AppHeader />
 
+    <UModals />
+
     <div class="relative">
         <slot />
     </div>
+
     <AppFooter />
 </template>
 
