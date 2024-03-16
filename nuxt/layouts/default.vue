@@ -2,6 +2,7 @@
     <AppHeader />
 
     <UModals />
+    <UNotifications />
 
     <div class="relative">
         <slot />

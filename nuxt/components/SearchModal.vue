@@ -6,24 +6,18 @@
 
         <UInput v-model="search" color="gray" :loading="loading" icon="i-heroicons-magnifying-glass-20-solid" @keyup.enter="searchData" />
 
-        <div v-if="results.users.length">
-          <UDivider :label="`USERS FOUND (${results.users.length})`" class="mb-3 mt-3" />
-          <ul :class="{'scroll':results.users.length > 5}">
-            <li v-for="user in results.users" :key="user.id" class="flex items-center justify-left mb-3">
-              <img class="relative inline-block h-8 w-8 rounded-full border-2 border-white object-cover object-center mr-2" :src="user.avatar" :alt="user.name">
-              <a href="" @click.prevent="`/users/${user.id}`">{{ user.name }}</a>
-            </li>
-          </ul>
+        <div v-if="!results.users.lenght && !results.posts.length && searched">
+          <p class="text-center mt-3">No results found</p>
         </div>
 
-        <div v-if="results.posts.length">
-          <UDivider :label="`POSTS FOUND (${results.posts.length})`" class="mb-3 mt-3" />
-          <ul :class="{'scroll':results.posts.length > 5}">
-            <li v-for="post in results.posts" :key="post.id" class="flex items-center justify-left mb-3">
-              <img class="relative inline-block h-8 w-8 rounded-full border-2 border-white object-cover object-center mr-2" :src="post.thumb" :alt="post.title">
-              <a href="" @click.prevent="`/posts/${post.slug}`">{{ post.title }}</a>
-            </li>
-          </ul>
+        <div v-else>
+          <div v-if="results.users.length">
+            <UsersSearch :users="results.users" />
+          </div>
+
+          <div v-if="results.posts.length">
+            <PostsSearch :posts="results.posts" />
+          </div>
         </div>
 
       </div>
@@ -31,19 +25,34 @@
 </template>
 
 <script setup>
-const isOpen = ref(false);
 const loading = ref(false);
 const search = ref('');
+const searched = ref(false);
 const results = reactive({
   users:[],
   posts:[]
 })
+const modal = useModal();
 const config = useRuntimeConfig();
+const toast = useToast()
+
+watch([search, modal.isOpen],([searchValue, modalIsOpen])=>{
+  if(!searchValue.length){
+    results.users = [];
+    results.posts = [];
+  }
+
+  if(!modalIsOpen){
+    results.users = [];
+    results.posts = [];
+    search.value = '';
+  }
+})
 
 async function searchData(){
   loading.value = true;
   try {
-  const data = await $fetch(config.public.apiBase+'/api/search',{
+  const data = await $fetch(config.public.apiBase+'/api/searc',{
     query:{
       's':search.value
     },
@@ -52,18 +61,27 @@ async function searchData(){
     }
   })
   loading.value = false;
+  searched.value = true;
   results.users = data.users;
   results.posts = data.posts;
+
+  setTimeout(() => {
+    searched.value = false;
+  }, 5000);
   } catch (error) {
+    toast.add({
+      title: 'Error',
+      description: 'An error occurred while searching',
+      icon: 'i-octicon-desktop-download-24',
+      timeout: 5000,
+    })
     loading.value = false;
+    searched.value = false;
     console.log(error)
   }
 }
 </script>
 
 <style lang="css" scoped>
-.scroll {
-  overflow-y:scroll;
-  height: 200PX;
-}
+
 </style>
