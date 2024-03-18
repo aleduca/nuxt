@@ -13,8 +13,8 @@ class SearchController extends Controller
     $search = request('s');
 
     $results = [
-      'users' => User::where('name', 'like', "%$search%")->get(),
-      'posts' => Post::where('title', 'like', "%$search%")->get(),
+      'users' => User::search($search)->get(),
+      'posts' => Post::search($search)->get(),
     ];
 
     return $results;

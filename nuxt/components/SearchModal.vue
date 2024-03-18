@@ -52,7 +52,7 @@ watch([search, modal.isOpen],([searchValue, modalIsOpen])=>{
 async function searchData(){
   loading.value = true;
   try {
-  const data = await $fetch(config.public.apiBase+'/api/searc',{
+  const data = await $fetch(config.public.apiBase+'/api/search',{
     query:{
       's':search.value
     },
