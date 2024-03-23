@@ -100,6 +100,21 @@ async function login(){
     await $fetch(config.public.apiBase+'/sanctum/csrf-cookie',{
       credentials: 'include'
     });
+
+    // get cookie csrf
+    const token = useCookie('XSRF-TOKEN');
+
+    //login
+    await $fetch(config.public.apiBase+'/login',{
+      method:'POST',
+      headers:{
+        'Content-Type': 'application/json',
+        'X-XSRF-TOKEN': token.value
+      },
+      body: JSON.stringify(form.value),
+      credentials: 'include'
+    })
+
     loading.value = false;
   } catch (error) {
     loading.value = false;

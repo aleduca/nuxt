@@ -82,6 +82,7 @@ const endpoint = computed(() => {
 
 const {data:users,error,pending} = await useFetch(endpoint.value,{
   query: { page},
+  credentials: 'include',
   lazy:true,
   watch: [page]
 });

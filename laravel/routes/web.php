@@ -1,9 +1,11 @@
 <?php
 
-use App\Models\Post;
-use App\Models\User;
+use App\Http\Controllers\LoginController;
 use Illuminate\Support\Facades\Route;
 
 Route::get('/', function () {
   return view('welcome');
 });
+
+
+Route::post('/login', [LoginController::class, 'store']);
