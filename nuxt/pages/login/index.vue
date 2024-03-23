@@ -37,7 +37,7 @@
                 </div>
                 <div class="mt-1 relative">
                   <div class="relative">
-                    <input id="" name="email" type="text" placeholder="Enter your email"
+                    <input v-model="form.email" name="email" type="text" placeholder="Enter your email"
                       class="relative block w-full disabled:cursor-not-allowed disabled:opacity-75 focus:outline-none border-0 form-input rounded-md placeholder-gray-400 dark:placeholder-gray-500 text-sm px-3 py-2 shadow-sm bg-white dark:bg-gray-900 text-gray-900 dark:text-white ring-1 ring-inset ring-gray-300 dark:ring-gray-700 focus:ring-2 focus:ring-primary-500 dark:focus:ring-primary-400">
                   </div>
                 </div>
@@ -56,14 +56,17 @@
 
                 <div class="mt-1 relative">
                   <div class="relative">
-                    <input id="" name="password" type="password"
+                    <input v-model="form.password" name="password" type="password"
                       placeholder="Enter your password"
                       class="relative block w-full disabled:cursor-not-allowed disabled:opacity-75 focus:outline-none border-0 form-input rounded-md placeholder-gray-400 dark:placeholder-gray-500 text-sm px-3 py-2 shadow-sm bg-white dark:bg-gray-900 text-gray-900 dark:text-white ring-1 ring-inset ring-gray-300 dark:ring-gray-700 focus:ring-2 focus:ring-primary-500 dark:focus:ring-primary-400">
                   </div>
                 </div>
               </div>
-              <button type="submit" class="focus:outline-none disabled:cursor-not-allowed disabled:opacity-75 flex-shrink-0 font-medium rounded-full text-sm gap-x-2 px-3 py-2 shadow-sm text-white dark:text-gray-900 bg-primary-500 hover:bg-primary-600 disabled:bg-primary-500 dark:bg-primary-400 dark:hover:bg-primary-500 dark:disabled:bg-primary-400 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary-500 dark:focus-visible:outline-primary-400 w-full flex justify-center items-center">
-                <span class="">Continue</span>
+              <button @click.prevent="login" type="submit" class="focus:outline-none disabled:cursor-not-allowed disabled:opacity-75 flex-shrink-0 font-medium rounded-full text-sm gap-x-2 px-3 py-2 shadow-sm text-white dark:text-gray-900 bg-primary-500 hover:bg-primary-600 disabled:bg-primary-500 dark:bg-primary-400 dark:hover:bg-primary-500 dark:disabled:bg-primary-400 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary-500 dark:focus-visible:outline-primary-400 w-full flex justify-center items-center">
+                <span class="">
+                  <template v-if="loading">Loading...</template>
+                  <template v-else>Login</template>
+                </span>
                   <span class="i-heroicons-arrow-right-20-solid flex-shrink-0 h-5 w-5"aria-hidden="true"></span>
               </button>
             </form>
@@ -79,7 +82,35 @@
 </template>
 
 <script setup>
+const form = ref({
+  email: 'dario.altenwerth@example.com',
+  password: '123'
+})
 
+const loading = ref(false);
+
+const toast = useToast();
+
+const config = useRuntimeConfig();
+
+async function login(){
+  try {
+    loading.value = true;
+    // generate cookie to protect against CSRF
+    await $fetch(config.public.apiBase+'/sanctum/csrf-cookie',{
+      credentials: 'include'
+    });
+    loading.value = false;
+  } catch (error) {
+    loading.value = false;
+    toast.add({
+      title: 'Error Login',
+      description: 'Error login, please try again',
+      icon:'i-heroicons-exclamation-circle',
+      timeout: 5000,
+    })
+  }
+}
 </script>
 
 <style lang="scss" scoped>
