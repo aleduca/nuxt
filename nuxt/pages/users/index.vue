@@ -7,8 +7,7 @@
             Users
           </h1>
           <div v-if="error">
-            {{ error.status }}
-            {{ error.statusText }}
+            Ocorreu um erro
           </div>
 
           <div v-else>
