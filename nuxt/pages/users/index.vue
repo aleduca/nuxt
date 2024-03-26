@@ -37,6 +37,9 @@
 <script setup>
 import dateFormat from '~/utils/dateFormat';
 
+definePageMeta({
+  middleware:['auth']
+});
 
 const columns = [{
   key: 'id',

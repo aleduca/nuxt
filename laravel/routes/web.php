@@ -8,3 +8,4 @@ Route::get('/', function () {
 });
 
 Route::post('/login', [LoginController::class, 'store']);
+Route::delete('/logout', [LoginController::class, 'destroy']);

@@ -5,6 +5,10 @@ export default defineNuxtConfig({
     'imgs': resolve(__dirname, './assets/img'),
     '!!': resolve(__dirname, './node_modules'),
   },
+  routeRules:{
+    '/login':{ssr:false},
+    '/users':{ssr:false},
+  },
   runtimeConfig: {
     // The private keys which are only available within server-side
     apiSecret: process.env.API_SECRET,

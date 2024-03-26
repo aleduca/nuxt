@@ -62,7 +62,6 @@
                   </div>
                 </div>
               </div>
-              {{ data.loading }}
               <button @click.prevent="auth" type="submit" class="focus:outline-none disabled:cursor-not-allowed disabled:opacity-75 flex-shrink-0 font-medium rounded-full text-sm gap-x-2 px-3 py-2 shadow-sm text-white dark:text-gray-900 bg-primary-500 hover:bg-primary-600 disabled:bg-primary-500 dark:bg-primary-400 dark:hover:bg-primary-500 dark:disabled:bg-primary-400 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary-500 dark:focus-visible:outline-primary-400 w-full flex justify-center items-center">
                 <span class="">
                   <template v-if="data.loading">Loading...</template>
@@ -87,6 +86,10 @@
 useHead({
   title:'Login'
 })
+
+definePageMeta({
+  middleware:['guest']
+});
 
 const form = ref({
   email: 'dario.altenwerth@example.com',

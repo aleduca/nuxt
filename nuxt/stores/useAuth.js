@@ -7,10 +7,20 @@ export const useAuth = defineStore('auth',() => {
 
   const loading = ref(false);
 
+  const user = ref(null);
+
+  const isLoggedIn = computed(() => user.value !== null);
+
   async function getUser(){
-    return await $fetch(config.public.apiBase+'/api/user',{
+    try {
+      const data = await $fetch(config.public.apiBase+'/api/user',{
         credentials: 'include'
     });
+
+    user.value = data;
+    } catch (error) {
+      console.log(error);
+    }
   }
 
   async function login(form){
@@ -35,7 +45,9 @@ export const useAuth = defineStore('auth',() => {
         credentials: 'include'
       });
 
-      const user = await getUser();
+      await getUser();
+
+      setCookieInDays('logged_in', true,1);
 
       loading.value = false;
 
@@ -51,7 +63,30 @@ export const useAuth = defineStore('auth',() => {
     }
   }
 
+  async function logout(){
+    try {
+      const token = useCookie('XSRF-TOKEN');
+      await $fetch(config.public.apiBase+'/logout',{
+        credentials: 'include',
+        method:'DELETE',
+        headers:{
+          'Content-Type': 'application/json',
+          'X-XSRF-TOKEN': token.value
+        }
+      });
+
+      const authCookie = useCookie('logged_in');
+      authCookie.value = null;
+      user.value = null;
+      token.value = null;
+
+      navigateTo('/');
+    } catch (error) {
+      console.log(error);
+    }
+  }
+
   return {
-    login, loading, getUser
+    login, loading, getUser,isLoggedIn,user,logout
   }
 })
